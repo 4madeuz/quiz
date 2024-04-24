@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 
 import uvicorn
 from fastapi import FastAPI
+from src.api import surveys
 
 
 app = FastAPI(
@@ -9,6 +10,9 @@ app = FastAPI(
     docs_url='/api/openapi',
     openapi_url='/api/openapi.json',
 )
+
+
+app.include_router(surveys.router, prefix="/surveys", tags=["surveys"])
 
 
 if __name__ == '__main__':
