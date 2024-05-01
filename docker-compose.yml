@@ -1,0 +1,35 @@
+version: '3'
+services:
+  app:
+    build:
+      context: ./server/quiz
+      dockerfile: Dockerfile
+    env_file: .env
+    restart: always
+    expose:
+      - 5432
+    ports:
+      - 8000:8000
+    depends_on:
+      - pg_database
+
+  client:
+    build: vue-project
+    ports:
+      - 8080:80
+  
+
+  pg_database:
+    image: postgres:13-alpine
+    container_name: pg_database
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - 5432:${POSTGRES_PORT}
+
+volumes:
+  postgres_data:

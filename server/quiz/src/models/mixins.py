@@ -16,10 +16,10 @@ class IdMixin:
 
 
 class TimestampMixin:
-    created_at = Column(DateTime, default=datetime.now(tz=False), nullable=False)
+    created_at = Column(DateTime, default=datetime.now(), nullable=False)
     updated_at = Column(
         DateTime,
-        default=datetime.now(tz=False),
-        onupdate=datetime.now(tz=False),
+        default=datetime.now(),
+        onupdate=datetime.now(),
         nullable=False,
     )

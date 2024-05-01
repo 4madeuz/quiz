@@ -10,8 +10,8 @@ class ModelNotFoundException(HTTPException):
 
 
 class InvalidFieldException(HTTPException):
-    def __init__(self, field) -> None:
+    def __init__(self) -> None:
         super().__init__(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f'Объект со значением {field} уже существует',
+            detail=f'Объект со значением уже существует',
         )

@@ -4,7 +4,9 @@ from uuid import UUID
 from pydantic import BaseModel
 from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
+from asyncpg.exceptions import UniqueViolationError
 from src.db.postgres import Base
+from src.core.exeptions import InvalidFieldException
 from src.services.abstract import AbstractDBService
 
 M = TypeVar('M', bound=Base)
@@ -40,7 +42,10 @@ class PostgresService(AbstractDBService):
 
     async def create(self, model_schema: BaseModel) -> M:
         """Создать объет"""
-        model_instance = self.model_class(**model_schema.model_dump())
+        try:
+            model_instance = self.model_class(**model_schema.model_dump())
+        except UniqueViolationError:
+            raise InvalidFieldException
         self.session.add(model_instance)
         await self.session.commit()
         return model_instance

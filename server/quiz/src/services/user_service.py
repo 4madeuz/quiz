@@ -1,4 +1,3 @@
-import hashlib
 from datetime import datetime
 from typing import Sequence
 from uuid import UUID
@@ -6,12 +5,25 @@ from uuid import UUID
 from fastapi import Depends
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
+from passlib.context import CryptContext
+
 from src.db.postgres import get_session
 from src.services.postgres_service import PostgresService
 from src.schemas.users import User as UserSchema
 from src.schemas.users import UserCreate
 from src.models.users import User as UserModel
 from src.core.exeptions import InvalidFieldException
+
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
 
 
 class UserService():
@@ -26,6 +38,7 @@ class UserService():
         self.postgres_service = postgres_service
 
     async def create_model(self, model_schema: UserCreate) -> UserModel:
+        model_schema.password = get_password_hash(model_schema.password)
         try:
             db_model: UserModel = await self.postgres_service.create(model_schema)
         except IntegrityError:
