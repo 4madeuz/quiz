@@ -53,8 +53,9 @@ class SurveyService():
             db_models = db_models.unique().scalars().all()
         else:
             db_models = await self.session.execute(
-                select(SurveyModel).where(SurveyModel.published is True))
+                select(SurveyModel).where(SurveyModel.published==True))
             db_models = db_models.unique().scalars().all()
+            print(db_models)
 
         return db_models
 
