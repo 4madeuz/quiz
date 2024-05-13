@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID
 from typing import Any, Optional
-from pydantic import BaseModel, Json
+from pydantic import BaseModel, Json, field_validator
 
 
 class Question(BaseModel):

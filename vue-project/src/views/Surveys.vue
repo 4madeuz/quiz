@@ -8,7 +8,7 @@ export default {
     this.getSurveys(); // Dispatch action to get surveys
   },
   computed: {
-    ...mapGetters({ surveys: 'stateSurveys'}),
+    ...mapGetters({ surveys: 'stateSurveys', user: 'stateUser'}),
   },
   methods: {
     ...mapActions(['getSurveys']), // Map getSurveys action
@@ -54,12 +54,12 @@ export default {
                 {{ data.id }}
             </template>
         </Column>
-        <Column field="name" header="Статус" style="min-width: 12rem">
+        <Column v-if="user.is_admin" field="name" header="Статус" style="min-width: 12rem">
             <template #body="{ data }">
                 {{ data.published }}
             </template>
         </Column>
-        <Column headerStyle="min-width:10rem;" header="Поменять статус">
+        <Column v-if="user.is_admin" headerStyle="min-width:10rem;" header="Поменять статус">
           <template #body="{ data }">
               <Button icon="pi pi-pencil" class="mr-2" severity="success" rounded @click="Publish(data.id)" />
           </template>

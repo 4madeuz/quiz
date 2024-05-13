@@ -11,14 +11,7 @@ const getters = {
 
 const actions = {
   async register({dispatch}, form) {
-    let UserForm = new FormData();
-    UserForm.append('username', form.username);
-    UserForm.append('password', form.password);
-    for (var pair of UserForm.entries()) {
-      console.log(pair[0]+ ', ' + pair[1]); 
-  }
-    await axios.post('/users', UserForm);
-    await dispatch('logIn', UserForm);
+    await axios.post('/users', form);
   },
   async logIn({dispatch}, user) {
     let UserForm = new FormData();

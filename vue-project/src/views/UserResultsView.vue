@@ -31,11 +31,11 @@
               </template>
           </Column>
           <Column field="name" header="Дата прохождения" style="min-width: 12rem">
-              <template #body="{ data }">
-                  {{ data.created_at }}
-              </template>
-          </Column>
-          <Column field="name" header="Тестирование" style="min-width: 12rem">
+                <template #body="{ data }">
+                    {{ removeTimezone(data.created_at) }}
+                </template>
+            </Column>
+          <Column field="name" header="Анкетирование" style="min-width: 12rem">
               <template #body="{ data }">
                 <router-link :to="{name: 'Survey', params:{id: data.survey.id}}">{{ data.survey.title }}</router-link>
               </template>
@@ -69,6 +69,10 @@ computed: {
 },
 methods: {
     ...mapActions(['getUserResults', 'viewMe']),
+    removeTimezone(created_at) {
+            const date = new Date(created_at);
+            return date.toLocaleString('ru-RU', { timeZone: 'UTC' });
+        }
 },
 });
 </script>

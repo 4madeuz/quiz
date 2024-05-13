@@ -89,7 +89,7 @@ class ResultService():
             survey_id=survey.id,
             correct_answers=correct_answers,
             answers_amount=len(correct_answers),
-            survey_len=len(question.options)
+            survey_len=len(survey.questions)
         )
         self.session.add(result)
         await self.session.commit()

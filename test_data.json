@@ -57,17 +57,17 @@
     }
   ],
   "survey_json":{
-    "title": "Тестирование пользователя",
+    "title": "Анкетирование пользователя",
     "showProgressBar": "bottom",
     "showTimerPanel": "top",
-    "maxTimeToFinishPage": 60,
-    "maxTimeToFinish": 300,
+    "maxTimeToFinishPage": 120,
+    "maxTimeToFinish": 600,
     "firstPageIsStarted": true,
-    "startSurveyText": "Начать тестирование",
+    "startSurveyText": "Начать анкетирвоание",
     "pages": [{
         "elements": [{
             "type": "html",
-            "html": "Вопросы для тестирования пользователя"
+            "html": "Вопросы для анкетирвоания пользователя"
         }]
     }, {
         "elements": [{
