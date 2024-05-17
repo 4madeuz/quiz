@@ -32,7 +32,7 @@
           </Column>
           <Column field="name" header="Дата прохождения" style="min-width: 12rem">
               <template #body="{ data }">
-                  {{ data.created_at }}
+                  {{ removeTimezone(data.created_at) }}
               </template>
           </Column>
           <Column field="name" header="Анкетирование" style="min-width: 12rem">
@@ -66,6 +66,10 @@ export default {
     },
   methods: {
     ...mapActions(['getResults']), // Map getSurveys action
+    removeTimezone(created_at) {
+            const date = new Date(created_at);
+            return date.toLocaleString('ru-RU', { timeZone: 'UTC' });
+        }
   },
 };
 </script>

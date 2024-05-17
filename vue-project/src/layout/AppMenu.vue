@@ -21,7 +21,7 @@ const model = [
     items: [
       { label: 'Опросы', icon: 'pi pi-fw pi-home', to: '/surveys' },
       { label: 'Результаты', icon: 'pi pi-fw pi-home', to: '/results', adminOnly: true }, // добавляем флаг adminOnly
-      { label: 'Результаты Пользователя', icon: 'pi pi-fw pi-home', to: '/user/self/results' },
+      { label: 'Результаты Пользователя', icon: 'pi pi-fw pi-home', to: '/user/self/results', userOnly: true },
     ],
   },
 ];
@@ -35,6 +35,11 @@ const modelWithPermissions = computed(() => {
   if (!user.value.is_admin) {
     filteredModel.forEach(menu => {
       menu.items = menu.items.filter(item => !item.adminOnly);
+    });
+  }
+  if (user.value.is_admin) {
+    filteredModel.forEach(menu => {
+      menu.items = menu.items.filter(item => !item.userOnly);
     });
   }
 
