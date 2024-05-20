@@ -35,7 +35,7 @@
                   {{ removeTimezone(data.created_at) }}
               </template>
           </Column>
-          <Column field="name" header="Анкетирование" style="min-width: 12rem">
+          <Column field="name" header="Тестирование" style="min-width: 12rem">
               <template #body="{ data }">
                 <router-link :to="{name: 'Survey', params:{id: data.survey.id}}">{{ data.survey.title }}</router-link>
               </template>

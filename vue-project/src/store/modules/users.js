@@ -10,8 +10,20 @@ const getters = {
 };
 
 const actions = {
-  async register({dispatch}, form) {
-    await axios.post('/users', form);
+  async register({ dispatch }, form) {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      });
+      return response
+    } catch (error) {
+      console.error('Fetch error:', error);
+      return response
+    }
   },
   async logIn({dispatch}, user) {
     let UserForm = new FormData();

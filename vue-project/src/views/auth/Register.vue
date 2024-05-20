@@ -23,11 +23,13 @@
                         </div>
                         <Button label="Зарегистрироваться" class="w-full p-3 text-xl" @click="register"></Button>
                     </div>
+                    <div v-if="errorMessage" class="text-red-600 text-center mb-5">{{ errorMessage }}</div>
                 </div>
             </div>
         </div>
     </div>
 </template>
+
 
 <script setup>
 import { useLayout } from '@/layout/composables/layout';
@@ -35,7 +37,6 @@ import { ref, computed } from 'vue';
 import AppConfig from '@/layout/AppConfig.vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
 
 const store = useStore();
 const router = useRouter();
@@ -45,23 +46,31 @@ const password = ref('');
 const checked = ref(false);
 const isAdmin = ref(false);
 const username = ref('');
+const errorMessage = ref('');
 
 const logoUrl = computed(() => {
     return `/layout/images/${layoutConfig.darkTheme.value ? 'logo-white' : 'logo-dark'}.svg`;
 });
 
-
-
 const register = async () => {
+    errorMessage.value = ''; // Reset error message
     try {
-        await store.dispatch('register', { email: email.value, password: password.value, is_admin: isAdmin.value, username: username.value });
-        // Redirect or show success message
+        const response = await store.dispatch('register', { email: email.value, password: password.value, is_admin: isAdmin.value, username: username.value });
+        if (response && response.status === 404) {
+            errorMessage.value = 'Пользователь с таким логином/электронной почтой уже существует.';
+        } else {
+            router.push('/auth/login');
+        }
     } catch (error) {
         console.error('Registration error:', error);
-        // Show error message
+        if (error.response && error.response.status === 404) {
+            errorMessage.value = 'Пользователь с таким логином/электронной почтой уже существует.';
+        } else {
+            errorMessage.value = 'Произошла ошибка при регистрации. Попробуйте еще раз.';
+        }
     }
-    router.push('/auth/login');
 };
+
 </script>
 
 <style scoped>
