@@ -25,12 +25,23 @@ const actions = {
       return response
     }
   },
-  async logIn({dispatch}, user) {
-    let UserForm = new FormData();
-    UserForm.append('username', user.username);
-    UserForm.append('password', user.password);
-    await axios.post('auth/login', UserForm);
-    await dispatch('viewMe');
+  async logIn({ dispatch }, user) {
+    try {
+      let UserForm = new FormData();
+      UserForm.append('username', user.username);
+      UserForm.append('password', user.password);
+
+      const response = await axios.post('http://127.0.0.1:8000/auth/login', UserForm); // Убедитесь, что URL правильный
+      if (response.status === 200) {
+        await dispatch('viewMe');
+      } else {
+        console.error('Login failed:', response.statusText);
+        throw new Error('Login failed');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    }
   },
   async viewMe({commit}) {
     let {data} = await axios.get('auth/me');

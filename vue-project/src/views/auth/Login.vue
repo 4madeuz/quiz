@@ -23,6 +23,7 @@
                         <Button label="Войти" class="w-full p-3 text-xl" @click="signIn"></Button>
                         <div class="text-center mb-5">
                     </div>
+                    <div v-if="errorMessage" class="text-red-600 text-center mb-5">{{ errorMessage }}</div>
                     </div>
                 </div>
             </div>
@@ -45,31 +46,26 @@ const { layoutConfig } = useLayout();
 const email = ref('');
 const password = ref('');
 const checked = ref(false);
+const errorMessage = ref('');
 
 const logoUrl = computed(() => {
     return `/layout/images/${layoutConfig.darkTheme.value ? 'logo-white' : 'logo-dark'}.svg`;
 });
 
 const signIn = async () => {
+    errorMessage.value = ''; // Reset error message
     try {
         await store.dispatch('logIn', { username: email.value, password: password.value });
         // Redirect or show success message
+        router.push('/surveys');
     } catch (error) {
         console.error('Sign in error:', error);
+        errorMessage.value = 'Неверные данные, проверьте соответствие логина/пароля';
         // Show error message
     }
-    router.push('/surveys');
 };
 
-const register = async () => {
-    try {
-        await store.dispatch('register', { username: email.value, password: password.value });
-        // Redirect or show success message
-    } catch (error) {
-        console.error('Registration error:', error);
-        // Show error message
-    }
-};
+
 </script>
 
 <style scoped>
