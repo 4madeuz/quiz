@@ -31,7 +31,7 @@ const actions = {
       UserForm.append('username', user.username);
       UserForm.append('password', user.password);
 
-      const response = await axios.post('http://127.0.0.1:8000/auth/login', UserForm); // Убедитесь, что URL правильный
+      const response = await axios.post('auth/login', UserForm); // Убедитесь, что URL правильный
       if (response.status === 200) {
         await dispatch('viewMe');
       } else {
