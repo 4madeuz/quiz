@@ -11,6 +11,14 @@ import { defineComponent } from 'vue';
 import { mapGetters, mapActions } from 'vuex';
 import 'survey-core/defaultV2.min.css';
 import { Model } from 'survey-core';
+import { surveyLocalization } from 'survey-core';
+const customLocaleStrings = {
+  pagePrevText: "Назад",
+  pageNextText: "Далее",
+  completeText: "Отправить"
+};
+
+surveyLocalization.locales["customlocale"] = customLocaleStrings;
 import axios from 'axios';
 
 export default defineComponent({
@@ -24,6 +32,7 @@ export default defineComponent({
       // Access the survey data and create the Model
       const surveyData = this.survey.survey_json;
       this.surveystest = new Model(surveyData);
+      this.surveystest.locale = "customlocale";
       
       // Add onComplete event handler
       this.surveystest.onComplete.add(async (sender, options) => {
